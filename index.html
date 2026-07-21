@@ -7,6 +7,45 @@
     <title>Document</title>
 </head>
 <body>
-    やっほーみえる？
+    <div class = "header">
+        Const's  Tools
+    </div>
+    <div id = "container">
+        <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon">
+        <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon">
+        <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon">
+        <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon">
+        <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon">
+        <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon">
+    </div>
 </body>
+<style>
+    .header{
+        background-color: rgb(54, 133, 76);
+        width: 100%;
+        height: 20%;
+        position: fixed;
+        left: 0;
+        top:0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+        font-family: "Comic Sans MS",cursive;
+        font-weight: 700;
+        color: white;
+    }
+    #container{
+        position: absolute;
+        top: 22%;
+        left: 2.5%;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 5%;
+    }
+    .icon{
+        height: 90%;
+        width: 90%;
+    }
+</style>
 </html>
