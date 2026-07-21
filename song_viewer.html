@@ -20,6 +20,8 @@
             id="resetButton"></button>
     <input type="number" id="tempoBox" value=180>
     <input type="file" id="fileLoadButtonSystem">
+    <img src="images/music_viewer/fast.png" id = "fast">
+    <img src="images/music_viewer/late.png" id = "late">
     <!-- <img src="images/tempoCounterCircle.png" alt="テンポカウンター1" id="tempoCounterCircle1" class="tempoCounterCircle">
     <img src="images/tempoCounterCircle.png" alt="テンポカウンター2" id="tempoCounterCircle2" class="tempoCounterCircle">
     <img src="images/tempoCounterCircle.png" alt="テンポカウンター3" id="tempoCounterCircle3" class="tempoCounterCircle">
@@ -29,7 +31,18 @@
     #fileLoadButtonSystem {
         display: none;
     }
-
+    #fast{
+        position:fixed;
+        width: 40px;
+        bottom: 140px;
+        left:300px  
+    }
+    #late{
+        position:fixed;
+        width: 40px;
+        bottom: 140px;
+        left: 20px;
+    }
     .tempoCounterCircle {
         position: fixed;
         height: 20vw;
@@ -139,6 +152,8 @@
     const resetButton = document.getElementById("resetButtonSurface");
     const tempoBox = document.getElementById("tempoBox");
     const nowTempo = document.getElementById("nowtempo");
+    const fast = document.getElementById("fast");
+    const late = document.getElementById("late");
     // const tempoCounterCircle1 = document.getElementById("tempoCounterCircle1");
     // const tempoCounterCircle2 = document.getElementById("tempoCounterCircle2");
     // const tempoCounterCircle3 = document.getElementById("tempoCounterCircle3");
@@ -151,6 +166,12 @@
         deltaT = tempo / 480;
         texts.textContent = deltaT;
     });
+    fast.onclick = function(){
+        time += 0.1;
+    };
+    late.onclick = function(){
+        time -=0.1;
+    };
     fileButton.onclick = () => {
         document.getElementById("fileLoadButtonSystem").click();
     };
