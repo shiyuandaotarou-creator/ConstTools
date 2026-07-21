@@ -22,12 +22,16 @@
     <input type="file" id="fileLoadButtonSystem">
     <img src="images/music_viewer/fast.png" id = "fast">
     <img src="images/music_viewer/late.png" id = "late">
-    <!-- <img src="images/tempoCounterCircle.png" alt="テンポカウンター1" id="tempoCounterCircle1" class="tempoCounterCircle">
-    <img src="images/tempoCounterCircle.png" alt="テンポカウンター2" id="tempoCounterCircle2" class="tempoCounterCircle">
-    <img src="images/tempoCounterCircle.png" alt="テンポカウンター3" id="tempoCounterCircle3" class="tempoCounterCircle">
-    <img src="images/tempoCounterCircle.png" alt="テンポカウンター4" id="tempoCounterCircle4" class="tempoCounterCircle"> -->
+    <textarea name="歌詞を入力" id="textarea"></textarea>
 </body>
 <style>
+    #textarea{
+        position: absolute;
+        width: 80%;
+        height: 20%;
+        top: 40%;
+        left: 10%;
+    }
     #fileLoadButtonSystem {
         display: none;
     }
@@ -154,9 +158,11 @@
     const nowTempo = document.getElementById("nowtempo");
     const fast = document.getElementById("fast");
     const late = document.getElementById("late");
+    const textarea = document.getElementById("textarea");
     let datalist;
     let tempo = 180;
     let deltaT = tempo / 480;
+    let text;
     tempoBox.addEventListener("change", () => {
         tempo = tempoBox.value;
         deltaT = tempo / 480;
@@ -174,6 +180,9 @@
     document.getElementById("fileLoadButtonSystem").addEventListener("change", async (e) => {
         const file = e.target.files[0];
         const text = await file.text();
+    });
+    textarea.addEventListener("change",()=>{
+        text = textarea.value;
         datalist = text.split(/\r?\n/);
         texts.textContent = "Loading Complete";
     });
