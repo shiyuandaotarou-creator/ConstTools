@@ -12,6 +12,7 @@
     </div>
     <div id = "container">
         <img src="images/music_viewer/icon.png" alt="歌詞メモ" class = "icon" id="lyric_memo">
+        <img src="images/game/icon.png" alt="ゲーム" class = "icon" id="game" onclick = "move('test.html')">
     </div>
 </body>
 <style>
@@ -48,5 +49,8 @@
     lyric_memo.onclick = function(){
         location.href = "song_viewer.html";
     };
+    function move(url){
+        location.href = `${url}`
+    }
 </script>
 </html>
