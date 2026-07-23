@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="text">Lyrics</p>
+    <p id="nowtime">nowtime</p>
+    <p id="nowtempo">3</p>
+    <div id = "footer">
+    <button id="fileLoadButtonSurface"><img src="images/fileButton.png" alt="ファイル選択ボタン" id="fileLoadButton"></button>
+    <button id="playChangeButtonSurface" class="emptyButton">
+        <img src="images/playButton.png" alt="再生ボタン" id="playButton">
+        <img src="images/pauseButton.png" alt="再生停止ボタン" id="pauseButton">
+    </button>
+    <button id="resetButtonSurface" class="emptyButton"><img src="images/initialize.png" alt="初期位置へ戻す"
+            id="resetButton"></button>
+    <input type="number" id="tempoBox" value=180>
+    </div>
+    <input type="file" id="fileLoadButtonSystem">
+    <img src="images/fast.png" id = "fast">
+    <img src="images/late.png" id = "late">
+    <textarea name="歌詞を入力" id="textarea"></textarea>
+</body>
+<style>
+    #footer{
+        display: flex;
+        
+    }
+    #textarea{
+        position: absolute;
+        width: 80%;
+        height: 20%;
+        top: 40%;
+        left: 10%;
+    }
+    #fileLoadButtonSystem {
+        display: none;
+    }
+    #fast{
+        position:fixed;
+        width: 10%;
+        bottom: 20%;
+        right: 10%;
+    }
+    #late{
+        position:fixed;
+        width: 10%;
+        bottom: 20%;
+        left: 10%;
+    }
+    #tempoBox {
+        /* position: fixed;
+        bottom: 22px;
+        left: 300px; */
+        height: 50px;
+        width: 70px;
+        font-size: 1cm;
+        text-align: center;
+    }
+    .emptyButton {
+        position: fixed;
+        border: none;
+        background: none;
+    }
+    #fileLoadButtonSurface {
+        /* position: fixed;
+        bottom: 10px; */
+        border: none;
+        background: none;
+    }
+    #fileLoadButton {
+        /* position: absolute;
+        bottom: 0; */
+        height: 20vw;
+    }
+    #resetButtonSurface {
+        position: fixed;
+        bottom: 12px;
+        left: 200px;
+    }
+    #resetButton {
+        position: absolute;
+        bottom: 0;
+        height: 20vw;
+    }
+
+    #playChangeButtonSurface {
+        position: fixed;
+        bottom: 89px;
+        left: 100px;
+    }
+
+    #playButton {
+        position: fixed;
+        height: 20vw;
+    }
+
+    #pauseButton {
+        position: fixed;
+        height: 20vw;
+        opacity: 0;
+    }
+    #nowtempo{
+        position:fixed;
+        bottom: 10px;
+        left: 140px;
+        font-size: 100px;
+        text-align: center;
+    }
+</style>
+<script>
+    //想定：2小節を一回あたり表示させる
+    //status: init 再生が始まっていない,playing 再生中である,paused 一時停止中である
+    let status = "init";
+    let primaryTime;
+    let time = 0;
+    let realTime = 0;
+    let previousTime = Date.now();;
+    let tempoCounter;
+    const fileButton = document.getElementById('fileLoadButtonSurface');
+    const texts = document.getElementById('text');
+    const playChangeButton = document.getElementById("playChangeButtonSurface");
+    const playButton = document.getElementById("playButton");
+    const pauseButton = document.getElementById("pauseButton");
+    const resetButton = document.getElementById("resetButtonSurface");
+    const tempoBox = document.getElementById("tempoBox");
+    const nowTempo = document.getElementById("nowtempo");
+    const fast = document.getElementById("fast");
+    const late = document.getElementById("late");
+    const textarea = document.getElementById("textarea");
+    let datalist;
+    let tempo = 180;
+    let deltaT = tempo / 480;
+    let text;
+    tempoBox.addEventListener("change", () => {
+        tempo = tempoBox.value;
+        deltaT = tempo / 480;
+        texts.textContent = deltaT;
+    });
+    fast.onclick = function(){
+        time += 0.1;
+    };
+    late.onclick = function(){
+        time -=0.1;
+    };
+    fileButton.onclick = () => {
+        document.getElementById("fileLoadButtonSystem").click();
+    };
+    document.getElementById("fileLoadButtonSystem").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        const text = await file.text();
+    });
+    textarea.addEventListener("change",()=>{
+        text = textarea.value;
+        datalist = text.split(/\r?\n/);
+        texts.textContent = "Loading Complete";
+    });
+    playChangeButton.onclick = () => {
+        if (status == "init") {
+            status = "playing";
+            playButton.style.opacity = 0;
+            pauseButton.style.opacity = 1;
+            primaryTime = Date.now();
+        } else if (status == "playing") {
+            status = "paused";
+            playButton.style.opacity = 1;
+            pauseButton.style.opacity = 0;
+        } else if (status == "paused") {
+            status = "playing";
+            playButton.style.opacity = 0;
+            pauseButton.style.opacity = 1;
+        }
+    };
+    resetButton.onclick = () => {
+        status = "init";
+        playButton.style.opacity = 1;
+        pauseButton.style.opacity = 0;
+        previousTime = Date.now();
+        primaryTime = Date.now();
+        time = 0;
+        realTime = 0;
+        document.getElementById("nowtempo").textContent = 1;
+        document.getElementById("nowtime").textContent = realTime;
+    };
+    function update() {
+        realTime = Math.round(time);
+        if (status != "init") {
+            tempoCounter = Math.floor(8 * time % 4 + 1);
+            document.getElementById("nowtime").textContent = time;
+            document.getElementById("nowtempo").textContent = tempoCounter;
+        }
+        if (status == "playing") {
+
+            time += deltaT * (Date.now() - previousTime) / 1000;
+            if (Array.isArray(datalist) && datalist.length >= Math.round(time)) {
+                texts.textContent = datalist[Math.round(realTime)];
+            }
+        };
+        previousTime = Date.now();
+        requestAnimationFrame(update)
+    };
+    update();
+</script>
+
+</html>

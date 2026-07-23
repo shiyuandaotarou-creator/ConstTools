@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LyricsViewer</title>
+</head>
+<body>
+    <!-- <p id="text1">bpm</p> -->
+    <div id = "lyrics"></div>
+    <div id="fastChanger">
+        <img src="images/late.png" class = "button" onclick="TimeAdder(-200)">
+        <img src="images/late.png" class = "button" style="width: 8vh;" onclick="TimeAdder(-100)">
+        <div style="flex: 1;"></div>
+        <img src="images/fast.png" class = "button" style="width: 8vh;" onclick="TimeAdder(100)">
+        <img src="images/fast.png" class = "button" onclick="TimeAdder(200)">
+    </div>
+    <div id = "bottomButtons">
+        <img src="images/fileButton.png" class = "button" onclick="mydialog.showModal()">
+        <img src="images/initialize.png" class = "button" id = "initialize" onclick = "StatusChanger(1)">
+        <img src="images/playButton.png" class="button" id ="playChange" onclick = "StatusChanger(0)">
+        <input type="number" id="inputBpm" onchange="ApplyBpm(this)">
+    </div>
+    <dialog id="mydialog"></dialog>
+</body>
+<style>
+    #lyrics{
+        background-color: rgb(104, 230, 198);
+        position: absolute;
+        top: 1%;
+        left:0%;
+        width: 100%;
+        height: 65%;
+    }
+    #mydialog{
+        background-color: rgb(202, 161, 161);
+        width: 50%;
+        height: 50%;
+    }
+    #bottomButtons{
+        background-color: rgb(101, 227, 185);
+        height: 15%;
+        width: 100%;
+        position: fixed;
+        bottom: 0%;
+        left: 0%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3%;
+    }
+        #fastChanger{
+        /* background-color: rgb(101, 227, 185); */
+        height: 15%;
+        width: 100%;
+        position: fixed;
+        bottom: 17%;
+        left: 0%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3%;
+    }
+    .button{
+        width: 10vh;
+    }
+    #inputBpm{
+        width: 30%;
+        height: 8vh;
+        text-align: center;
+        font-size: 300%;
+    }
+</style>
+<script>
+    //status = init/playing/pause
+    status = "init";
+    const playChange = document.getElementById("playChange");
+    const initializeButton = document.getElementById("initialize");
+    const text1 = document.getElementById("text1");
+    let bpm = 0;
+    let playTime = 0;
+    let previousTime;
+    function TimeAdder(delta){
+        if(playTime+delta > 0){
+            playTime += delta
+        }
+    }
+    function StatusChanger(type){
+        if(type == 0){
+            if(status == "pause"){
+                playChange.src =  "images/pauseButton.png";
+                status = "playing";
+                previousTime = Date.now();
+            }else if(status =="playing"){
+                playChange.src =  "images/playButton.png";
+                status = "pause";
+            }
+        }else if(type == 1){
+            playTime = 0;
+        }
+    }
+    function ApplyBpm(myself){
+        bpm = myself.value;
+        if(status == "init")status = "pause"
+    }
+    function ShowText(obj,text){
+        obj.textContent = text;
+    }
+    function update(){
+        if(status == "playing"){
+            playTime += (Date.now()-previousTime);
+        }
+        previousTime = Date.now();
+        requestAnimationFrame(update);
+    }
+    update();
+    fetch("dialog_fileloading.html").then(res => res.text()).then(html =>{
+        mydialog.innerHTML = html;
+    })
+</script>
+</html>
