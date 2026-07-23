@@ -6,13 +6,20 @@
     <title>Document</title>
 </head>
 <body>
+    
     ここはテストですがまだ何もないようです。
     いずれ何かができるので10億年ぐらいまっていただけますでしょうか？
     <button id ="yes">仕方ないから待ってやるか</button>
     <button id ="no">ふざけんな大気圏にとばすぞ</button>
-    <div id = "textarea"><p id="text"></p></div>
+    <div id = "textarea"><p id="text"></p><img src="../images/home.png" alt="" class = "button" id="toHome" onclick="location.href = '../index.html'"></div>
 </body>
 <style>
+    .button{
+        position: absolute;
+        width: 10vh;
+        bottom: 0%;
+        display:none;
+    }
     #yes{
         position:absolute;
         top: 200px;
@@ -39,9 +46,11 @@
     const no = document.getElementById("no");
     const text = document.getElementById("text");
     const textarea = document.getElementById("textarea");
+    const toHome = document.getElementById("toHome");
     yes.onclick = function(){
         text.textContent = "よろしい。寛大な選択に感謝を。";
         textarea.style.backgroundColor = "green";
+        toHome.style.display = "block";
     };
     no.onclick = function(){
         text.textContent ="警告：あなたの家はじゃがいもミサイルによってロックオンされています";

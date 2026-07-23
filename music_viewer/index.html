@@ -11,6 +11,7 @@
         <p id = "lyricsText">ここが一行目の歌詞になります。結構長くとる。</p>
         <p id = "lyricsTextNext">ここが二行目の歌詞になります。結構長くとる。</p>
     </div>
+    <img src="../images/home.png" alt="" id="toHome" class = "button" onclick ="location.href='../index.html'">
     <div id="fastChanger">
         <img src="images/late.png" class = "button" onclick="TimeAdder(-200)">
         <img src="images/late.png" class = "button" style="width: 8vh;" onclick="TimeAdder(-100)">
@@ -25,8 +26,12 @@
         <input type="number" id="inputBpm" onchange="ApplyBpm(this)" value="180">
     </div>
     <dialog id="mydialog"></dialog>
+    
 </body>
 <style>
+    #toHome{
+        position:absolute;
+    }
     #tempoCounter{
         font-size: 400%;
         font-weight: 700;
@@ -95,7 +100,7 @@
         width: 30%;
         height: 8vh;
         text-align: center;
-        font-size: 300%;
+        font-size: 200%;
     }
     #lyricsInput{
         width: 100%;
