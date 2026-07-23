@@ -11,16 +11,22 @@
          <img src="../images/home.png" alt="" class = "button" onclick="location.href = '../index.html'">
         <p>更新履歴とメモ</p>
     </div>
-   
-    <h1><br></h1>
-    <div>
-        <h3>2026/07/24</h3>
-        <p>歌詞メモにテキスト読み込み機能とBPM調節機能を追加。BPMカウンターのズレ補正が効かない問題あり</p>
-    </div>
-    <div>
+    <div id="text">
+                <div>
+            <h3>2026/07/24 3:45</h3>
+            <p>「更新履歴とメモ」で正常に文章が表示されない問題の改善</p>
+        </div>
+        <div>
+            <h3>2026/07/24 3:00</h3>
+            <p>「歌詞メモ」にテキスト読み込み機能とBPM調節機能を追加。BPMカウンターのズレ補正が効かない問題あり</p>
+        </div>
     </div>
 </body>
 <style>
+    #text{
+        position: absolute;
+        top: 20%;
+    }
     .button{
         width: 10vh;
     }
@@ -39,6 +45,7 @@
         font-weight: 700;
         color: white;
         gap: 4% ;
+        z-index: 10;
     }
 </style>
 </html>
