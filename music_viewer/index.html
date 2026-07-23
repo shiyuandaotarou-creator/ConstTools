@@ -6,12 +6,15 @@
     <title>LyricsViewer</title>
 </head>
 <body>
-    <!-- <p id="text1">bpm</p> -->
-    <div id = "lyrics"></div>
+    
+    <div id = "lyricsArea">
+        <p id = "lyricsText">ここが一行目の歌詞になります。結構長くとる。</p>
+        <p id = "lyricsTextNext">ここが二行目の歌詞になります。結構長くとる。</p>
+    </div>
     <div id="fastChanger">
         <img src="images/late.png" class = "button" onclick="TimeAdder(-200)">
         <img src="images/late.png" class = "button" style="width: 8vh;" onclick="TimeAdder(-100)">
-        <div style="flex: 1;"></div>
+        <p id="tempoCounter">1</p>
         <img src="images/fast.png" class = "button" style="width: 8vh;" onclick="TimeAdder(100)">
         <img src="images/fast.png" class = "button" onclick="TimeAdder(200)">
     </div>
@@ -19,23 +22,47 @@
         <img src="images/fileButton.png" class = "button" onclick="mydialog.showModal()">
         <img src="images/initialize.png" class = "button" id = "initialize" onclick = "StatusChanger(1)">
         <img src="images/playButton.png" class="button" id ="playChange" onclick = "StatusChanger(0)">
-        <input type="number" id="inputBpm" onchange="ApplyBpm(this)">
+        <input type="number" id="inputBpm" onchange="ApplyBpm(this)" value="180">
     </div>
     <dialog id="mydialog"></dialog>
 </body>
 <style>
-    #lyrics{
+    #tempoCounter{
+        font-size: 400%;
+        font-weight: 700;
+    }
+    #lyricsText{
+        font-weight: 800;
+        font-size: 200%;
+    }
+    #lyricsTextNext{
+        font-size: 100%;
+    }
+    #lyricsArea{
         background-color: rgb(104, 230, 198);
-        position: absolute;
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         top: 1%;
         left:0%;
         width: 100%;
         height: 65%;
+        overflow:hidden;
+    }
+    #lyricsInput{
+        width: 80%;
+        height: 70%;
+    }
+    #lyricsText{
+        white-space: pre-wrap;
+        text-align: center;
     }
     #mydialog{
-        background-color: rgb(202, 161, 161);
-        width: 50%;
-        height: 50%;
+        background-color: rgb(121, 213, 249);
+        width: 80%;
+        height: 70%;
     }
     #bottomButtons{
         background-color: rgb(101, 227, 185);
@@ -70,20 +97,51 @@
         text-align: center;
         font-size: 300%;
     }
+    #lyricsInput{
+        width: 100%;
+        height: 70%;
+    }
+    #lyricsInput{
+        font-size: 200%;
+    }
 </style>
 <script>
     //status = init/playing/pause
-    status = "init";
+    status = "pause";
     const playChange = document.getElementById("playChange");
     const initializeButton = document.getElementById("initialize");
     const text1 = document.getElementById("text1");
-    let bpm = 0;
+    const lyricsText = document.getElementById("lyricsText");
+    const lyricsTextNext=document.getElementById("lyricsTextNext");
+    const tempoCounter = document.getElementById("tempoCounter");
+    let lyricLoaded = false;
+    let bpm = 180;
     let playTime = 0;
     let previousTime;
+    let index = 0;
+    let lyric;
+    let beats;
+    let beatDataSum=0;
+    let beatSum=1;
+    let lyricsArray=0;
     function TimeAdder(delta){
         if(playTime+delta > 0){
             playTime += delta
         }
+    }
+    function LyricsApplyer(){
+        lyricsArray = lyricsInput.value.split("*").slice(1);
+        lyricTime = 0;
+        lyricLoaded = true;
+    }
+    function dateStringer(stringDate){//mm:ss形式のデータを秒に直す
+        let result;
+        let minute;
+        let sec;
+        result = stringDate.split(":");
+        minute = Number(result[0]);
+        sec = Number(result[1]);
+        return 60*minute+sec;
     }
     function StatusChanger(type){
         if(type == 0){
@@ -97,6 +155,13 @@
             }
         }else if(type == 1){
             playTime = 0;
+            lyricTime = 0;
+            index=0;
+            tempoCounter.textContent=1;
+            if(lyricLoaded){
+                lyricsText.textContent = lyricsArray[1];
+                lyricsTextNext.textContent = lyricsArray[3];
+            }
         }
     }
     function ApplyBpm(myself){
@@ -108,14 +173,39 @@
     }
     function update(){
         if(status == "playing"){
+            beatSum = Math.floor(bpm*(1/60)*playTime/1000)+1;
             playTime += (Date.now()-previousTime);
-        }
+            if(lyricLoaded){
+            if(playTime/1000 > lyricTime){
+                lyric = lyricsArray[2*index+1];
+                lyricTime = dateStringer(lyricsArray[2*index+2]);
+                if(dateStringer(lyricsArray[2*index+2]) ==0 ){
+                    status = "pause";
+                    playChange.src =  "images/playButton.png";
+                }
+                lyricsText.textContent =lyricsArray[2*index+1];
+                lyricsTextNext.textContent = lyricsArray[2*index+3] ?? "";
+                index ++;
+            }
+            tempoCounter.textContent =(beatSum-1)%4+1;
+
+            }else{
+                lyricsText.textContent =beatSum;
+                lyricsTextNext.textContent = lyricsArray[2*index+3] ?? "";
+                tempoCounter.textContent = Math.floor(bpm*(1/60)*playTime/1000)%4+1;
+            }
+            
+        }else if(!lyricLoaded){
+                lyricsText.textContent =Math.floor(bpm*(1/60)*playTime/1000)+1;
+                
+            }
         previousTime = Date.now();
         requestAnimationFrame(update);
     }
     update();
     fetch("dialog_fileloading.html").then(res => res.text()).then(html =>{
         mydialog.innerHTML = html;
-    })
+        const lyricsInput = document.getElementById("lyricsInput");
+    });
 </script>
 </html>
