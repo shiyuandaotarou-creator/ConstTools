@@ -24,6 +24,7 @@
             Load
         </div>
     </div>
+    <p id="debug_text">デバッグ用テキスト</p>
     <div id="db_controller">
         <div class="button" style="background-color: rgb(189, 76, 76);" onclick="delreq()">
             ClearRoom
@@ -34,6 +35,11 @@
     </div>
 </body>
 <style>
+    #debug_text {
+        position: absolute;
+        top: 50%;
+    }
+
     #header {
         position: absolute;
         z-index: 1;
@@ -124,6 +130,7 @@
     const load_button = document.getElementById("load_button");
     const text_data = document.getElementById("text_data");
     const loaded_text = document.getElementById("loaded_text");
+    const debug_text = document.getElementById("debug_text");
     function creatreq() {
         const MyDB = indexedDB.open("MyDB", 1);
         MyDB.onupgradeneeded = (e) => {
@@ -174,7 +181,11 @@
     }
     load_button.onclick = Load;
     save_button.onclick = Save;
-
+    function update() {
+        indexedDB.databases().then((db) => { debug_text.textContent = db });
+        requestAnimationFrame(update);
+    }
+    update();
 </script>
 
 </html>
