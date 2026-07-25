@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
 
-    <div class = "header">
-         <img src="../images/home.png" alt="" class = "button" onclick="location.href = '../index.html'">
+    <div class="header">
+        <img src="../images/home.png" alt="" class="button" onclick="location.href = '../index.html'">
         <p>更新履歴とメモ</p>
     </div>
     <div id="text">
-                <div>
+        <div>
+            <h3>2026/07/26 0:05</h3>
+            <p>1.「歌詞メモ」にテンポカウンターの微調節機能を追加(誤差分を定数としてそれだけプレイ時間に加算)。若干テンポカウンターがズレている用な感じがする</p>
+            <p>2.「歌詞メモ」に表示されていたデバッグ文を消去</p>
+        </div>
+        <div>
             <h3>2026/07/24 3:45</h3>
             <p>「更新履歴とメモ」で正常に文章が表示されない問題の改善</p>
         </div>
@@ -23,29 +30,32 @@
     </div>
 </body>
 <style>
-    #text{
+    #text {
         position: absolute;
         top: 20%;
     }
-    .button{
+
+    .button {
         width: 10vh;
     }
-        .header{
+
+    .header {
         background-color: rgb(54, 133, 76);
         width: 100%;
         height: 20%;
         position: fixed;
         left: 0;
-        top:0;
+        top: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 150%;
-        font-family: "Comic Sans MS",cursive;
+        font-family: "Comic Sans MS", cursive;
         font-weight: 700;
         color: white;
-        gap: 4% ;
+        gap: 4%;
         z-index: 10;
     }
 </style>
+
 </html>
