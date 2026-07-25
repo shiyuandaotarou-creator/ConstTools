@@ -1,53 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" href="images/icon.png">
     <title>ConstToolsTopPage</title>
 </head>
+
 <body>
-    <div class = "header">
+    <div class="header">
         ConstTools
     </div>
-    <div id = "container">
-        <img src="music_viewer/images/icon.png" alt="歌詞メモ" class = "icon" onclick = "move('music_viewer/index.html')">
-        <img src="test/images/icon.png" alt="ゲーム" class = "icon" id="game" onclick = "move('test/test.html')">
-        <img src="change_shower/images/icon.png" alt="更新履歴" class = "icon" id="changeShower" onclick = "move('change_shower/index.html')">
+    <div id="container">
+        <img src="music_viewer/images/icon.png" alt="歌詞メモ" class="icon" onclick="move('music_viewer/index.html')">
+        <img src="test/images/icon.png" alt="ゲーム" class="icon" id="game" onclick="move('test/test.html')">
+        <img src="dataloadingtest/images/icon.png" alt="更新履歴" class="icon" id="data_load_test"
+            onclick="move('dataloadingtest/index.html')">
+        <img src="change_shower/images/icon.png" alt="読み込みテスト" class="icon" id="changeShower"
+            onclick="move('change_shower/index.html')">
     </div>
 </body>
 <style>
-    .header{
+    .header {
         background-color: rgb(54, 133, 76);
         width: 100%;
         height: 20%;
         position: fixed;
         left: 0;
-        top:0;
+        top: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 50px;
-        font-family: "Comic Sans MS",cursive;
+        font-family: "Comic Sans MS", cursive;
         font-weight: 700;
         color: white;
     }
-    #container{
+
+    #container {
         position: absolute;
         top: 22%;
         left: 2.5%;
         display: grid;
-        grid-template-columns: repeat(3,1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 5%;
     }
-    .icon{
+
+    .icon {
         height: 90%;
         width: 90%;
     }
 </style>
 <script>
-    function move(url){
+    function move(url) {
         location.href = `${url}`
     }
 </script>
+
 </html>

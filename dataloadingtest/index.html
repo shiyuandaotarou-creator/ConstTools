@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="header">
+        <img src="../images/home.png" onclick="location.href = '../index.html'" class="icon">
+    </div>
+    <div id="input_div">
+        <input type="text" id="text_data">
+        <div id="save_button">
+            Save
+        </div>
+    </div>
+    <div id="output_div">
+        <p id="loaded_text"></p>
+        <div id="load_button" onclick="indexedDB.databases().then((db)=>{console.log(db);
+        })">
+            Load
+        </div>
+    </div>
+    <div id="db_controller">
+        <div class="button" style="background-color: rgb(189, 76, 76);" onclick="delreq()">
+            ClearRoom
+        </div>
+        <div class="button" style="background-color: rgb(63, 191, 127);" onclick="creatreq()">
+            Create Room
+        </div>
+    </div>
+</body>
+<style>
+    #header {
+        position: absolute;
+        z-index: 1;
+    }
+
+    .icon {
+        width: 10vh;
+    }
+
+    #db_controller {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 8%;
+        background-color: rgb(150, 73, 73);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10%;
+    }
+
+    #input_div {
+        background-color: rebeccapurple;
+        position: absolute;
+        width: 100%;
+        height: 50%;
+        left: 0;
+        top: 0%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10%;
+    }
+
+    #output_div {
+        background-color: rgb(149, 201, 206);
+        position: absolute;
+        width: 100%;
+        height: 50%;
+        left: 0;
+        top: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10%;
+    }
+
+    #text_data {
+        height: 10%;
+        width: 80%;
+        font-size: 200%;
+        text-align: center;
+    }
+
+    #loaded_text {
+        background-color: white;
+        height: 10%;
+        width: 80%;
+        font-size: 200%;
+        text-align: center;
+    }
+
+    #save_button {
+        background-color: blue;
+        height: 10%;
+        width: 20%;
+        text-align: center;
+    }
+
+    .button {
+        height: 50%;
+        width: 20%;
+        text-align: center;
+    }
+
+    #load_button {
+        background-color: rgb(246, 246, 246);
+        height: 10%;
+        width: 20%;
+        text-align: center;
+    }
+</style>
+<script>
+    const save_button = document.getElementById("save_button");
+    const load_button = document.getElementById("load_button");
+    const text_data = document.getElementById("text_data");
+    const loaded_text = document.getElementById("loaded_text");
+    function creatreq() {
+        const MyDB = indexedDB.open("MyDB", 1);
+        MyDB.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            db.createObjectStore("newStore");
+            console.log(db.objectStoreNames);
+
+            console.log("小部屋を新規作成済");
+            db.close();
+        }
+    }
+    function delreq() {
+        const delReq = indexedDB.deleteDatabase('MyDB');
+        delReq.onblocked = () => { console.log("blocked") };
+    }
+    function Save() {
+        const request = indexedDB.open("MyDB");
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const transaction = db.transaction(
+                "newStore", "readwrite"
+            );
+            const store = transaction.objectStore("newStore");
+            store.put(text_data.value, "save_data");
+            transaction.oncomplete = () => {
+                console.log("保存完了!");
+                db.close();
+            }
+        }
+    }
+    function Load() {
+        const request = indexedDB.open("MyDB");
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction(
+                "newStore",
+                "readonly"
+            );
+            const store = tx.objectStore("newStore");
+            const getReq = store.get("save_data");
+            getReq.onsuccess = (e) => {
+                loaded_text.textContent = e.target.result;
+            }
+            tx.oncomplete = () => {
+                db.close();
+            }
+        }
+    }
+    load_button.onclick = Load;
+    save_button.onclick = Save;
+
+</script>
+
+</html>
