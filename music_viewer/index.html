@@ -10,8 +10,8 @@
 <body>
 
     <div id="lyricsArea">
-        <p id="lyricsText">今の歌詞</p>
-        <p id="lyricsTextNext">次に出てくる歌詞</p>
+        <div id="lyricsText">今の歌詞</div>
+        <div id="lyricsTextNext">次に出てくる歌詞</div>
     </div>
     <img src="../images/home.png" alt="" id="toHome" class="button" onclick="location.href='../index.html'">
     <div id="fastChanger">
@@ -231,8 +231,8 @@
                         status = "pause";
                         playChange.src = "images/playButton.png";
                     }
-                    lyricsText.textContent = lyricsArray[2 * index + 1];
-                    lyricsTextNext.textContent = lyricsArray[2 * index + 3] ?? "";
+                    lyricsText.innerHTML = `${lyricsArray[2 * index + 1]}`.replace(/#(.*?)#/g,"<span style='color:red'>$1</span>");
+                    lyricsTextNext.innerHTML = (`${lyricsArray[2 * index + 3]} `?? "").replace(/#(.*?)#/g,"<span style='color:red'>$1</span>");;
                     index++;
                 }
                 tempoCounter.textContent = (beatSum - 1) % 4 + 1;
