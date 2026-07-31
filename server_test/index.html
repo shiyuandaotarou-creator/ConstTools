@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img src="../images/home.png" id="home_icon" onclick="location.href = '../index.html'">;
+    <div id="inputs">
+        <input type="text" id="text">
+        <button id="button">テキストを追加</button>
+        <button id="logInButton">ログイン</button>
+        <button id="logInOtherButton">別のアカウントからログイン</button>
+        <button id="logOutButton">ログアウト</button>
+    </div>
+
+    <div id="messageArea"></div>
+</body>
+<style>
+    #home_icon {
+        position: absolute;
+        height: 10%;
+    }
+
+    #inputs {
+        top: 20%;
+        position: absolute;
+    }
+
+    #messageArea {
+        background-color: aliceblue;
+        width: 100%;
+        height: 60%;
+        position: fixed;
+        left: 0%;
+        bottom: 0%;
+        white-space: pre-line;
+    }
+</style>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
+    import {
+        getAuth,
+        GoogleAuthProvider,
+        signInWithPopup,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+    import {
+        getFirestore,
+        collection,
+        addDoc,
+        onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyAjMM25VtMUWA26DrvEDPGwu_rKv5FRGIk",
+        authDomain: "consttools.firebaseapp.com",
+        projectId: "consttools",
+        storageBucket: "consttools.firebasestorage.app",
+        messagingSenderId: "225964002660",
+        appId: "1:225964002660:web:70cd3a18041b9b9f6bfe71",
+        measurementId: "G-X0LJN8GF22"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const logInButton = document.getElementById('logInButton');
+    const logOutButton = document.getElementById('logOutButton');
+    const logInOtherButton = document.getElementById('logInOtherButton');
+    const db = getFirestore(app);
+    provider.setCustomParameters({
+        prompt: "select_account"
+    });
+    logInButton.onclick = () => signInWithPopup(auth, provider).then((result) => {
+        console.log("ログイン成功");
+        console.log(result.user.email);
+        alert(auth.currentUser ?? "noone");
+    }).catch((error) => {
+        console.error(error);
+    });
+    logOutButton.onclick = async () => {
+        await signOut(auth);
+        alert("ログアウトしたぞ");
+        alert(auth.currentUser ?? "noone");
+    }
+    const analytics = getAnalytics(app);
+    const text = document.getElementById('text');
+    const button = document.getElementById('button');
+    const messageArea = document.getElementById('messageArea');
+    button.onclick = async () => {
+        await addDoc(
+            collection(db, "messages"),
+            { text: text.value }
+        );
+        text.value = "";
+    };
+    onSnapshot(
+        collection(db, "messages"),
+        (snap) => {
+            let texts = "";
+            snap.forEach((doc) => {
+                texts += doc.data().text + "\n";
+            });
+            messageArea.textContent = texts;
+        }
+    )
+</script>
+
+</html>
