@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="textarea">
+    <button id="click"> クリック</button>
+    <div id="result"></div>
+
+</body>
+<script>
+    const textarea = document.getElementById('textarea');
+    const click = document.getElementById('click');
+    const result = document.getElementById('result');
+    click.onclick = ()=>{
+        result.innerHTML = `<p>${textarea.value}</p>`.replace(/#r(.*?)#r/g,"<span style='color:red'>$1</span>").replace(/#b(.*?)#b/g,"<span style='color:blue'>$1</span>"); 
+    }
+</script>
+</html>

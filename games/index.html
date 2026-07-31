@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="apple-touch-icon" href="images/icon.png">
-    <title>ConstToolsTopPage</title>
+    <title>Document</title>
 </head>
-
 <body>
-    <div class="header">
-        ConstTools
+        <div class="header">
+        Games
     </div>
+    <img src="../../images/home.png" id="homeicon" onclick = "move('../../index.html')">
     <div id="container">
-        <img src="music_viewer/images/icon.png" alt="歌詞メモ" class="icon" onclick="move('music_viewer/index.html')">
-        <img src="games/images/icon.png" alt="ゲーム" class="icon" id="game" onclick="move('games/index.html')">
-        <img src="dataloadingtest/images/icon.png" alt="更新履歴" class="icon" id="data_load_test"
-            onclick="move('dataloadingtest/index.html')">
-        <img src="change_shower/images/icon.png" alt="読み込みテスト" class="icon" id="changeShower"
-            onclick="move('change_shower/index.html')">
+        <img src="images/sushida_icon.png" class = "icon" onclick = "move('type_tester/index.html')">
+        <img src="images/ice_skating_icon.png" class = "icon" onclick = "move('ice_skating/index.html')">
     </div>
 </body>
 <style>
-    .header {
+        #homeicon{
+        position: absolute;
+        z-index: 1;
+        width: 10vh;
+    }
+        .header {
         background-color: rgb(54, 133, 76);
         width: 100%;
         height: 20%;
@@ -36,9 +35,7 @@
         font-family: "Comic Sans MS", cursive;
         font-weight: 700;
         color: white;
-        z-index: 1;
     }
-
     #container {
         position: absolute;
         top: 22%;
@@ -47,16 +44,14 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 5%;
     }
-
     .icon {
         height: 90%;
         width: 90%;
     }
 </style>
 <script>
-    function move(url) {
-        location.href = `${url}`
+    function move(url){
+        location.href = url;
     }
 </script>
-
 </html>
