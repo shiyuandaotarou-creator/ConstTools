@@ -85,6 +85,16 @@
         console.log("ログイン成功");
         console.log(result.user.email);
         alert(auth.currentUser ?? "noone");
+        onSnapshot(
+            collection(db, "messages"),
+            (snap) => {
+                let texts = "";
+                snap.forEach((doc) => {
+                    texts += doc.data().text + "\n";
+                });
+                messageArea.textContent = texts;
+            }
+        )
     }).catch((error) => {
         console.error(error);
     });
@@ -104,16 +114,7 @@
         );
         text.value = "";
     };
-    onSnapshot(
-        collection(db, "messages"),
-        (snap) => {
-            let texts = "";
-            snap.forEach((doc) => {
-                texts += doc.data().text + "\n";
-            });
-            messageArea.textContent = texts;
-        }
-    )
+
 </script>
 
 </html>
