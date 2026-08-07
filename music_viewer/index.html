@@ -13,19 +13,20 @@
         <div id="lyricsText">今の歌詞</div>
         <div id="lyricsTextNext">次に出てくる歌詞</div>
     </div>
-    <img src="../images/home.png" alt="" id="toHome" class="button" onclick="location.href='../index.html'">
+    <img src="../images/home.png" alt="." id="toHome" class="button" onclick="location.href='../index.html'">
     <div id="fastChanger">
-        <img src="images/late.png" class="button" onclick="TimeAdder(-200)">
-        <img src="images/late.png" class="button" style="width: 8vh;" onclick="TimeAdder(-100)">
+        <img src="images/late.png" class="button" id="late_1">
+        <img src="images/late.png" class="button" style="width: 8vh;" id="late_2">
         <p id="tempoCounter">1</p>
-        <img src="images/fast.png" class="button" style="width: 8vh;" onclick="TimeAdder(100)">
-        <img src="images/fast.png" class="button" onclick="TimeAdder(200)">
+        <img src="images/fast.png" class="button" style="width: 8vh;" id="fast_2">
+        <img src="images/fast.png" class="button" id="fast_1">
     </div>
     <div id="bottomButtons">
+        <img src="images/initialize.png" class="button" id="initialize" >
+        <img src="images/load_lyrics_button.png" class="button" id="loadLyrics">
         <img src="images/fileButton.png" class="button" onclick="mydialog.showModal()">
-        <img src="images/initialize.png" class="button" id="initialize" onclick="StatusChanger(1)">
-        <img src="images/playButton.png" class="button" id="playChange" onclick="StatusChanger(0)">
-        <input type="number" id="inputBpm" onchange="ApplyBpm(this)" value="180">
+        <img src="images/playButton.png" class="button" id="playChange">
+        <input type="number" id="inputBpm" value="180">
     </div>
     <dialog id="mydialog"></dialog>
     <div id="centerButtons"><input type="range" id="deltaTempo">
@@ -110,7 +111,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 3%;
+        gap: 1%;
     }
 
     #fastChanger {
@@ -127,7 +128,7 @@
     }
 
     .button {
-        width: 10vh;
+        width: 8vh;
     }
 
     #inputBpm {
@@ -146,7 +147,8 @@
         font-size: 200%;
     }
 </style>
-<script>
+<script type="module">
+    import * as main from "./dataload.js";
     //status = init/playing/pause
     status = "pause";
     const playChange = document.getElementById("playChange");
@@ -157,6 +159,13 @@
     const tempoCounter = document.getElementById("tempoCounter");
     const deltaTempo = document.getElementById("deltaTempo");
     const textdeltaTempo = document.getElementById("textdeltaTempo");
+    const mydialog = document.getElementById('mydialog');    
+    const inputBpm = document.getElementById('inputBpm');
+    const late_1 = document.getElementById('late_1');
+    const late_2 = document.getElementById('late_2');
+    const fast_1 = document.getElementById('fast_1');
+    const fast_2 = document.getElementById('fast_2');
+    const loadLyrics = document.getElementById('loadLyrics');
     let lyricLoaded = false;
     let bpm = 180;
     let playTime = 0;
@@ -168,6 +177,15 @@
     let beatSum = 1;
     let lyricsArray = 0;
     let deltaTempoValue = 0;
+    let lyricTime;
+    initializeButton.onclick = () => StatusChanger(1);
+    late_1.onclick = () => TimeAdder(-200);
+    late_2.onclick = ()=> TimeAdder(-100);
+    fast_1.onclick = () => TimeAdder(200);
+    fast_2.onclick = ()=> TimeAdder(100);
+    playChange.onclick = () => StatusChanger(0);
+    inputBpm.onchange = ApplyBpm(inputBpm);
+    loadLyrics.onclick = LyricsLoader;
     deltaTempo.oninput = function () {
         deltaTempoValue = (deltaTempo.value - 50) * 4 / 50;
         textdeltaTempo.textContent = `テンポカウンター調節:${deltaTempoValue > 0 ? "＋" : (deltaTempoValue == 0 ? "±" : "－")}${Math.abs(deltaTempoValue)}`;
@@ -181,6 +199,15 @@
         lyricsArray = lyricsInput.value.split("*").slice(1);
         lyricTime = 0;
         lyricLoaded = true;
+        console.log("ロード完了");
+    }
+    async function LyricsLoader(){
+        let data = await main.Load("mysong");
+        console.log(data);
+        lyricsArray = data.split("*").slice(1);
+        lyricTime = 0;
+        lyricLoaded = true;
+        console.log("データベースからロード完了");
     }
     function dateStringer(stringDate) {//mm:ss形式のデータを秒に直す
         let result;
@@ -254,6 +281,12 @@
     fetch("dialog_fileloading.html").then(res => res.text()).then(html => {
         mydialog.innerHTML = html;
         const lyricsInput = document.getElementById("lyricsInput");
+        const lyricsExitButton = document.getElementById('lyricsExitButton');
+        lyricsInput.onchange = LyricsApplyer;
+        lyricsExitButton.onclick = ()=>{
+            mydialog.close()
+            main.Save("mysong",lyricsInput.value)
+        }
     });
 </script>
 

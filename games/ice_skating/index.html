@@ -6,15 +6,92 @@
     <title>Document</title>
 </head>
 <body>
+    <p id="text">0</p>
     <img src="../images/game_controller.png" id="homeicon" onclick = "location.href = '../index.html'">
-    ボート漕ぎゲーム
+    <img src="images/simple_black_boat.png" id="boat">
+    <canvas id="groundCanvas"></canvas>
 </body>
 <style>
+    #groundCanvas{
+        background-color: rgb(179, 218, 235); 
+        width: 100%;
+        height: 50%;
+        position: fixed;
+        left: 0%; 
+        bottom: 10%;
+    }
         #homeicon{
         position: absolute;
         z-index: 1;
         width: 10vh;
         border: 2px solid green;
     }
+    #boat{
+        position: fixed;
+        bottom: 58%;
+        width: 10%;
+        left:10%;
+        z-index: 1;
+    }
 </style>
+<script>
+    const groundCanvas = document.getElementById('groundCanvas');
+    const boat = document.getElementById('boat');
+    const text = document.getElementById('text');
+    const ctx = groundCanvas.getContext("2d");
+    const img = new Image();
+    const N = 100;
+    const v0=10;
+    let ac;
+    let k= 1;
+    let vel = v0;
+    let pos = 0;
+    let pressed = false;
+    let deltaTime;
+    let previousTime =0 ;
+    let force = 0;
+    let cameraPos = 0;
+    const nowTime = Date.now()/1000;
+    let t=0;
+    img.src = "images/ice_grid.png";
+    img.onload = ()=>{
+        for (let i = 0; i < N; i++) {
+            ctx.drawImage(img,20*i,0,20,20);
+        }
+    }
+    function update(time=0){
+        cameraPos += 0.001;
+        deltaTime = (time-previousTime)/1000;
+        previousTime = time;
+        ac = (-1)*k*vel + force;
+        vel += ac*deltaTime;
+        pos += vel*deltaTime -cameraPos;
+        groundCanvas.style.left = cameraPos+"%";
+        // if(0<pos + vel*deltaTime && pos + vel*deltaTime <90){
+            
+        // }else{
+        //     vel = 0;
+        //     ac = 0;
+        // }
+        boat.style.left = pos+"%";
+        text.textContent =`${Math.round(vel)}m/s` ;
+        requestAnimationFrame(update);
+    }
+    update();
+    document.addEventListener("keydown",(e)=>{
+        if(e.code == "ArrowRight"){
+            force = 100;
+            console.log("加速");
+            
+        };
+        if(e.code =="ArrowLeft"){
+            force = -100;
+        }
+    });
+    document.addEventListener("keyup",(e)=>{
+        if(e.code == "ArrowLeft" || e.code == "ArrowRight"){
+            force = 0;
+        }
+    })
+</script>
 </html>
