@@ -184,7 +184,7 @@
     fast_1.onclick = () => TimeAdder(200);
     fast_2.onclick = ()=> TimeAdder(100);
     playChange.onclick = () => StatusChanger(0);
-    inputBpm.onchange = ApplyBpm(inputBpm);
+    inputBpm.onchange = ApplyBpm();
     loadLyrics.onclick = LyricsLoader;
     deltaTempo.oninput = function () {
         deltaTempoValue = (deltaTempo.value - 50) * 4 / 50;
@@ -239,8 +239,8 @@
             }
         }
     }
-    function ApplyBpm(myself) {
-        bpm = myself.value;
+    function ApplyBpm() {
+        bpm = inputBpm.value;
         if (status == "init") status = "pause"
     }
     function ShowText(obj, text) {
