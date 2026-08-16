@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="noteDisplayArea">
+        <canvas id="noteDisplayCanvas"></canvas>
+        <img id="clef">
+        <img src = "images/note.png" id="note">
+        
+    </div>
+    <p id="noteNameText">C</p>
+</body>
+<style>
+    #noteNameText{
+        position: absolute;
+        left: 50%;
+        top: 80%;
+        transform: translate(-50%,-50%);
+        font-size: 200%;
+    }
+    #noteDisplayArea{
+        position: fixed;
+        background-color: rgb(227, 224, 224);
+        left: 50%;
+        top: 50%;
+        width: 90%;
+        height: 60%;
+        transform: translate(-50%,-80%);
+        border: 5px solid rgb(209, 209, 209);
+    }
+    #note{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-85%);
+    }
+</style>
+<script type="module">
+    import * as noteShower from "./js/noteShower.js";
+</script>
+</html>
