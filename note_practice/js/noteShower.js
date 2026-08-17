@@ -49,7 +49,7 @@ function update() {
     }, 3 * 1000);
 }
 function pointerMove(pitch) {
-    wwid = window.screen.width;
+    wwid = window.innerWidth;
     pointer.style.left = wwid * 0.362 + wwid * 0.043 * pitch + "px"
 }
 function refresh() {
