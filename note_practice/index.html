@@ -1,45 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div id="noteDisplayArea">
         <canvas id="noteDisplayCanvas"></canvas>
         <img id="clef">
-        <img src = "images/note.png" id="note">
-        
+        <img src="images/note.png" id="note">
+
     </div>
-    <p id="noteNameText">C</p>
+    <div>
+        <p id="keySig"></p>
+    </div>
+    <img src="images/keyboard.png" id="keyboard">
+    <img src="images/pointer.png" id="pointer">
+    <p id="remainTime">--</p>
 </body>
 <style>
-    #noteNameText{
+    #keyboard {
+        position: fixed;
+        width: 90%;
+        height: 20%;
+        left: 5%;
+        bottom: 10%;
+    }
+
+    #remainTime {
+        position: fixed;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 87%;
+        font-size: 50px;
+    }
+
+    #pointer {
+        display: none;
+        position: fixed;
+        width: 10px;
+        bottom: 11.5%;
+    }
+
+    #keySig {
         position: absolute;
         left: 50%;
-        top: 80%;
-        transform: translate(-50%,-50%);
+        top: 73%;
+        transform: translate(-50%, -50%);
         font-size: 200%;
     }
-    #noteDisplayArea{
+
+    #noteDisplayArea {
         position: fixed;
         background-color: rgb(227, 224, 224);
         left: 50%;
         top: 50%;
         width: 90%;
         height: 60%;
-        transform: translate(-50%,-80%);
+        transform: translate(-50%, -80%);
         border: 5px solid rgb(209, 209, 209);
     }
-    #note{
+
+    #note {
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%,-85%);
+        /* left: 50%;
+        top: 50%; */
+        transform: translate(-50%, -85%);
     }
 </style>
 <script type="module">
     import * as noteShower from "./js/noteShower.js";
 </script>
+
 </html>
