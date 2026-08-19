@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="inputBox"><p>Github URL:</p><input type="text" id="inputURL"><button id="clearButton">Clear</button></div>
+    <div class="outputBox"><p>Export URL:</p><input type="text" id="outputURL"><button id="copyButton"> Copy</button></div>
+    <select id="copyMode">
+         <option value="asClass">Defaultつきクラスとしてコピー</option>
+        <option value="simple">URLをコピー</option>
+        <option value="asModule">モジュールとしてコピー</option>
+    </select>
+</body>
+<style>
+    .small{
+        color: red;
+        font-size: 10px;
+    }
+</style>
+<script type="module">
+    import * as main from "./main.js";
+</script>
+</html>
