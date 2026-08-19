@@ -6,15 +6,26 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="inputBox"><p>Github URL:</p><input type="text" id="inputURL"><button id="clearButton">Clear</button></div>
-    <div class="outputBox"><p>Export URL:</p><input type="text" id="outputURL"><button id="copyButton"> Copy</button></div>
+    <div class="inputBox"><p>Github URL :</p><input type="text" id="inputURL"><button id="pasteButton" class="greenButton">Paste</button><button id="clearButton">Clear</button></div>
+    <div class="outputBox"><p>Export :</p><input type="text" id="outputURL"><button id="copyButton" class="greenButton"> Copy</button></div>
     <select id="copyMode">
          <option value="asClass">Defaultつきクラスとしてコピー</option>
         <option value="simple">URLをコピー</option>
         <option value="asModule">モジュールとしてコピー</option>
     </select>
+    <p>※Pasteを押すとクリップボードのURLが変換されて自動的にクリップボードに変換後のURLが貼り付けられます。</p>
 </body>
 <style>
+    #clearButton{
+        background-color: rgb(255, 0, 0);
+        color: white;
+        font-weight: 700;
+    }
+    .greenButton{
+        background-color: green;
+        color: white;
+        font-weight: 700;
+    }
     .small{
         color: red;
         font-size: 10px;
